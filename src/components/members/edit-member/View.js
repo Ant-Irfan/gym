@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from "react-router-dom";
 import "./add-member.css"
 import Logo from "../../../assets/logo.png"
+import { DatePicker, Space } from 'antd';
 
+const { RangePicker } = DatePicker;
 const EditMember = (props) => {
 
     const { actions, memberTypes, member } = props
@@ -13,12 +15,29 @@ const EditMember = (props) => {
    const [category, setCategory] = useState("")
    const [phone, setPhone] = useState("")
    const [address, setAddress] = useState("")
+   const [startDate, setstartDate] = useState(null);
+   const [endDate, setendDate] = useState(null);
 
    useEffect(() => {
-        const id = location.pathname.split('/')[2]
-        actions.getMemberTypes()
-        actions.getMemberById(id)
-   }, [])
+       const id = location.pathname.split('/')[2]
+       actions.getMemberById(id)
+    }, [])
+    
+    useEffect(() => {
+     actions.getMemberTypes()
+ }, [])
+ 
+
+   function onChange(value, dateString) {
+       console.log(memberTypes)
+    console.log("dad");
+    setstartDate(dateString[0])
+    setendDate(dateString[1])
+    }
+
+    function onOk(value) {
+    console.log('onOk: ', value);
+    }
    
 
    const handleSubmit = (e) => {
@@ -29,7 +48,9 @@ const EditMember = (props) => {
             email,
             address,
             telephone: phone,
-            memberType: category
+            memberType: category,
+            startDate,
+            endDate
         }
         actions.editMember(member, id)
     }
@@ -57,7 +78,7 @@ const EditMember = (props) => {
             <select 
             onChange={e => setCategory(e.target.value)}
             class="form-select item" aria-label="Default select example">
-                { memberTypes && memberTypes.map(memberType => {
+               { memberTypes && memberTypes.map(memberType => {
                     return(
                         <option value={memberType.typeName}>{memberType.typeName}</option>
                     )
@@ -73,6 +94,26 @@ const EditMember = (props) => {
                 <input 
                 onChange={e => setAddress(e.target.value)}
                 type="text" className="form-control item" id="address" placeholder="Adresa" />
+            </div>
+            <div className="form-group text-center mb-4">
+            <Space direction="vertical" size={12}>
+            <RangePicker
+            onChange={onChange}
+            onOk={onOk}
+            dateRender={current => {
+                const style = {};
+                if (current.date() === 1) {
+                style.border = '1px solid #1890ff';
+                style.borderRadius = '50%';
+                }
+                return (
+                <div className="ant-picker-cell-inner" style={style}>
+                    {current.date()}
+                </div>
+                );
+            }}
+            />
+            </Space>
             </div>
             <div className="form-group">
                 <button 

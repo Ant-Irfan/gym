@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { getMembers, deleteMember } from "../modules/actions"
+import { getMembers, deleteMember, editMember, memberCheckedIn } from "../modules/actions"
 import { bindActionCreators } from 'redux';
 
 const mapStateToProps = state => ({
@@ -10,7 +10,9 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(
       {
         getMembers,
-        deleteMember
+        deleteMember,
+        editMember,
+        memberCheckedIn
       },
       dispatch,
     ),

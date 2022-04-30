@@ -3,7 +3,7 @@ import { Switch, withRouter } from 'react-router-dom';
 import Login from './components/authentication';
 import AddMemberType  from './components/member-types/add-member-type';
 import MemberTypes from './components/member-types';
-import Home from './components/home/View';
+import Home from './components/home';
 import AddMember from './components/members/add-member';
 import EditMember from './components/members/edit-member'
 import Members from './components/members/list';

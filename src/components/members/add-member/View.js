@@ -107,7 +107,7 @@ const AddMember = (props) => {
         var current = moment().startOf('day');
         console.log(moment.duration(given.diff(current)).asDays());
         console.log(member);
-        /* actions.addMember(member) */
+        actions.addMember(member)
         
     }
 

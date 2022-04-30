@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
       {
         editMember,
         getMemberTypes,
-        getMemberById,
+        getMemberById
       },
       dispatch,
     ),

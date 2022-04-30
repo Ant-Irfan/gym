@@ -373,7 +373,7 @@ p {
   ===============================================*/
 .training {
   display: -ms-grid;
-  display: grid;
+ 
   gap: 20px;
   /* Modifier */
 }
@@ -396,6 +396,7 @@ p {
   text-decoration: none;
   cursor: pointer;
   min-height: 550px;
+  max-height: 550px;
 }
 
 .training__card-title {

@@ -8,7 +8,8 @@ import {
     GET_MEMBERS_ERROR,
     GET_MEMBERS_TYPES_RECEIVE,
     GET_MEMBERS_TYPE_RECEIVE,
-    GET_MEMBER_RECEIVE
+    GET_MEMBER_RECEIVE,
+    GET_MEMBERS_IN_GYM_RECEIVE
 } from '../../../modules/types';
 import axios from 'axios';
 import history from "../../../history"
@@ -23,7 +24,9 @@ const receiveMember = (payload) => (
     { type: GET_MEMBER_RECEIVE, payload });
 const receiveMemberTypes = (payload) => ({ type: GET_MEMBERS_TYPES_RECEIVE, payload });
 const receiveMemberType = (payload) => ({ type: GET_MEMBERS_TYPE_RECEIVE, payload });
+const receiveMembersInGym = (payload) => ({ type: GET_MEMBERS_IN_GYM_RECEIVE, payload });
 
+const token = localStorage.getItem("token")
 
 export const addMember = member => async (dispatch, getState) => {
     dispatch(requestAddMember())
@@ -33,7 +36,8 @@ export const addMember = member => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -55,7 +59,8 @@ export const getMembers = () => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -72,7 +77,8 @@ export const deleteMember = (id) => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -85,17 +91,22 @@ export const deleteMember = (id) => async (dispatch, getState) => {
 }
 
 export const getMemberTypes = () => async (dispatch, getState) => {
+    console.log(
+        "dsada"
+    );
     dispatch(requestMembers())
     const response = await axios.get(
 		'http://localhost:5000/api/memberTypes',
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
     if(response){
+        console.log("res", response);
         dispatch(receiveMemberTypes(response.data))
     }
     else
@@ -111,7 +122,8 @@ export const addMemberType = memberType => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -133,7 +145,8 @@ export const deleteMemberType = (id) => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -152,7 +165,8 @@ export const getMemberById = (id) => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -171,7 +185,8 @@ export const getMemberTypeById = (id) => async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -191,7 +206,8 @@ export const updateMemberType = (memberType, id) =>  async (dispatch, getState) 
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
@@ -213,15 +229,62 @@ export const editMember = (member, id) =>  async (dispatch, getState) => {
         {
 			headers: {
 				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
 			}
 		}
     )
     if(response){
-        notification.success({
+        console.log(response);
+        notification.success({ 
             message:"Clan uspjesno uredjen!"
         })
         history.replace("/clanovi")
+    }
+    else
+        dispatch(receiveMembersError())
+}
+
+export const memberCheckedIn = (member) =>  async (dispatch, getState) => {
+    console.log("member", member)
+    dispatch(requestMembers())
+    const response = await axios.post(
+			`http://localhost:5000/api/gym`,
+            member,
+        {
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
+			}
+		}
+    )
+    if(response){
+        console.log(response);
+        notification.success({ 
+            message:"Clan uspjesno uredjen!"
+        })
+        history.replace("/clanovi")
+    }
+    else
+        dispatch(receiveMembersError())
+}
+
+
+export const getMembersInGym = () => async (dispatch, getState) => {
+    const response = await axios.get(
+		'http://localhost:5000/api/gym',
+        {
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+                "Authorization": `Bearer ${token}`
+			}
+		}
+    )
+    if(response){
+        console.log(response.data.membersInGym)
+        dispatch(receiveMembersInGym(response.data.membersInGym))
     }
     else
         dispatch(receiveMembersError())

@@ -13,10 +13,13 @@ export const Login = loginDetails => async (dispatch, getState) => {
 		}
     )
     if(response){
-        notification.success({
-            message:"Uspjesno ste se logovali!"
-        })
-        history.push("/pocetna")
+        if (response.data.token) {
+            localStorage.setItem("token", response.data.token)
+            notification.success({
+                message:"Uspjesno ste se logovali!"
+            })
+            history.push("/pocetna")
+        }
     }
     else
         notification.error({

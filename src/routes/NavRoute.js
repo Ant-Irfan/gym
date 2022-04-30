@@ -6,8 +6,10 @@ export const NavRoute = ({ component: Component, ...rest }) => (
       {...rest}
       component={(props) => (
         <div>
-          <Navbar />
-          <Component {...props} />
+          {
+            localStorage.getItem("token") &&
+            <><Navbar /><Component {...props} /></>
+          }
         </div>
       )}
     />

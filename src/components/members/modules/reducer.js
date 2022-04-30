@@ -5,7 +5,8 @@ import {
     GET_MEMBERS_RECEIVE,
     GET_MEMBERS_TYPES_RECEIVE,
     GET_MEMBERS_TYPE_RECEIVE,
-    GET_MEMBER_RECEIVE
+    GET_MEMBER_RECEIVE,
+    GET_MEMBERS_IN_GYM_RECEIVE
 } from '../../../modules/types';
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
     member: null,
     loading:false,
     error:null,
-    memberType: null
+    memberType: null,
+    membersInGym: []
 }
 
 export const memberReducer = (state = initialState, action) => {
@@ -60,6 +62,12 @@ export const memberReducer = (state = initialState, action) => {
                     case GET_MEMBER_RECEIVE:
                         return{
                             member: action.payload.member,
+                            loading:false,
+                            error:null
+                        }
+                        case GET_MEMBERS_IN_GYM_RECEIVE: 
+                        return{
+                            membersInGym: action.payload,
                             loading:false,
                             error:null
                         }
